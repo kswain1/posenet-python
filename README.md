@@ -67,3 +67,7 @@ The Python conversion code that started me on my way was adapted from the CoreML
 * Comment interfaces, tensor dimensions, etc
 * Implement batch inference for image_demo
 
+### Setup Steps: 
+1. pip install requirements 
+2. Create Image Folder
+
