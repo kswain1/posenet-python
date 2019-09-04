@@ -115,6 +115,17 @@ def main():
                 # f.close()
 
 
+        df = DataFrame(posenetObject, columns=["leftHip", "rightHip", "leftKnee", "rightKnee", "leftAnkle", "rightAnkle"])
+        export_csv = df.to_csv(fileName,index=None, header=True)
+
+
+            #Check for filenames length has been reached
+            #print iterate to the first file name
+            #print the pose instance in the file (for multiple people)
+            #iterate through each key point in the file, and print them line by line
+            ## issue: will print one file then the next file. Won't concatenate all the key points samples into one blog
+
+
 
             if not args.notxt:
                 print()
@@ -127,11 +138,6 @@ def main():
                         print('Keypoint %s, score = %f, coord = %s' % (posenet.PART_NAMES[ki], s, c))
 
         print('Average FPS:', len(filenames) / (time.time() - start))
-
-        #export pandas data frame
-        df = DataFrame(posenetObject,
-                       columns=["leftHip", "rightHip", "leftKnee", "rightKnee", "leftAnkle", "rightAnkle"])
-        export_csv = df.to_csv(fileName, index=None, header=True)
 
 
 if __name__ == "__main__":
