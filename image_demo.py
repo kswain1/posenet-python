@@ -12,7 +12,10 @@ parser.add_argument('--model', type=int, default=101)
 parser.add_argument('--scale_factor', type=float, default=1.0)
 parser.add_argument('--notxt', action='store_true')
 parser.add_argument('--image_dir', type=str, default='./images')
+parser.add_argument('--video_dir', type=str, default='./video_dir')
 parser.add_argument('--output_dir', type=str, default='./output')
+parser.add_argument('--output_csv_dir', type=str, default='./outputcsv')
+parser.add_argument('--output_video', type=str, default='./outputVideo' )
 args = parser.parse_args()
 
 
@@ -25,6 +28,10 @@ def main():
         if args.output_dir:
             if not os.path.exists(args.output_dir):
                 os.makedirs(args.output_dir)
+
+        if args.output_csv_dir:
+            if not os.path.exists(args.output_csv_dir):
+                os.makedirs(args.output_csv_dir)
 
         filenames = [
             f.path for f in os.scandir(args.image_dir) if f.is_file() and f.path.endswith(('.png', '.jpg'))]
@@ -56,6 +63,21 @@ def main():
                     min_pose_score=0.25, min_part_score=0.25)
 
                 cv2.imwrite(os.path.join(args.output_dir, os.path.relpath(f, args.image_dir)), draw_image)
+
+            if args.output_csv_dir:
+                script_dir = os.path.dirname(__file__)
+                filenameUpdate = os.path.relpath(f, args.image_dir)
+                filenameUpdate = args.output_csv_dir +'/' + filenameUpdate.strip('jpg') + 'txt'
+                #filenameUpdate = filenameUpdate.strip('jpg') + 'txt'
+                f = open(filenameUpdate, "w")
+                f.write("Results for image: %s" % f.name + '\n')
+                for pi in range(len(pose_scores)):
+                    if pose_scores[pi] == 0.:
+                        break
+                    f.writelines(" Pose #%d, score = %f" % (pi, pose_scores[pi]) + '\n')
+                    for ki, (s, c) in enumerate(zip(keypoint_scores[pi, :], keypoint_coords[pi, :, :])):
+                        f.write("keypoint %s, score =%f , coordindates = %s" % (posenet.PART_NAMES[ki], s, c) + '\n')
+                f.close()
 
             if not args.notxt:
                 print()
