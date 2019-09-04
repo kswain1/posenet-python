@@ -79,6 +79,26 @@ def main():
                         f.write("keypoint %s, score =%f , coordindates = %s" % (posenet.PART_NAMES[ki], s, c) + '\n')
                 f.close()
 
+            if args.output_video:
+                fileName = args.output_video + '/' + 'kehlin-posnet.csv'
+                f = open(fileName, "a")
+                f.write("Results for image: %s " %f.name + '\n')
+                for pi in range(len(pose_scores)):
+                    if pose_scores[pi] == 0:
+                        break
+                    f.writelines(" Pose #%d, score = %f" % (pi, pose_scores[pi]) + '\n')
+                    for ki, (s, c) in enumerate(zip(keypoint_scores[pi, :], keypoint_coords[pi, :, :])):
+                        f.write("keypoint %s, score =%f , coordindates = %s" % (posenet.PART_NAMES[ki], s, c) + '\n')
+                f.close()
+
+            #Check for filenames length has been reached
+            #print iterate to the first file name
+            #print the pose instance in the file (for multiple people)
+            #iterate through each key point in the file, and print them line by line
+            ## issue: will print one file then the next file. Won't concatenate all the key points samples into one blog
+
+
+
             if not args.notxt:
                 print()
                 print("Results for image: %s" % f)

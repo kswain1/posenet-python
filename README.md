@@ -71,3 +71,10 @@ The Python conversion code that started me on my way was adapted from the CoreML
 1. pip install requirements 
 2. Create Image Folder
 
+### Adding Your Image Folder
+We can our own folder to the project, and when you run a python command to specific folder. 
+
+`python image_demo.py --image_dir ./kehlin_swings`
+
+./kehlin_swings(can be the video footage that you want to add to the file. 
+
